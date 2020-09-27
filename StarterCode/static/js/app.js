@@ -1,5 +1,5 @@
 
-
+//init fuction to run table and plots funtion for name when selected. Append "option" to add all IDS
 
 function init() {
     d3.json("samples.json").then(function(data) {
@@ -17,7 +17,7 @@ function init() {
 }
 init()
 
-
+//build plot to generate table with demographic info on change
 function buildTable(name){
     d3.json("samples.json").then(function(data){
         var metadata=data.metadata;
@@ -25,6 +25,7 @@ function buildTable(name){
         
         console.log(filteredmetaData)
         
+
         var samplebody = d3.select("#sample-metadata");
             samplebody.html("")
             Object.entries(filteredmetaData).forEach(([key, value]) => {
@@ -38,9 +39,11 @@ function buildTable(name){
     })  
 
     }
-
+//build plots for bar, gauge, and bubble
     function buildPlots(name){
         d3.json("samples.json").then(function(data){
+            
+            //create variables from samples json
             var samples=data.samples;
             var filteredsampledata = samples.filter(data=>data.id==name)[0] 
             var sample_values =filteredsampledata.sample_values
@@ -54,7 +57,9 @@ function buildTable(name){
             var metadata=data.metadata;
             var filteredmetaData = metadata.filter(data=>data.id==name)[0]
             var wfreq=filteredmetaData.wfreq
-    
+
+            
+            //barplot
             var barselect = d3.select("#bar");
                 var trace1 = {
                 x: sample_values.slice(0, 10).reverse(),
@@ -64,7 +69,7 @@ function buildTable(name){
                 type: "bar",
                 orientation: "h"
               };
-              // data
+              // trace1
                 var data = [trace1];
     
     // Apply the group bar mode to the layout
@@ -72,9 +77,9 @@ function buildTable(name){
                     title: "Bar",
                     };
     
-                    // Render the plot to the div tag with id "plot"
+                    // Render the plot to the div tag with id "bar"
                     Plotly.newPlot("bar", data, layout);
-                    
+             //bubble plot       
          var bubblebody=d3.select("#bubble");
                 var trace2 = {
                 x: otu_ids,
@@ -88,7 +93,7 @@ function buildTable(name){
                 
                 
             };
-                      
+               //trace2       
             var data2 = [trace2];
                       
             var layout2 = {
@@ -97,7 +102,7 @@ function buildTable(name){
                 height: 600,
                 width: 600
                       };
-                      
+                      // Render the plot to the div tag with id "bubble"
                       Plotly.newPlot('bubble', data2, layout2);
                        
     
@@ -105,7 +110,7 @@ function buildTable(name){
                         {
                             domain: { x: [0, 9], y: [0, 9] },
                             value: wfreq,
-                            title: { text: "Belly Button Washing" },
+                            title: { text: "Weekly Frequency of Belly Button Washing" },
                             type: "indicator",
                             mode: "gauge+number",
                             gauge:{
@@ -121,7 +126,7 @@ function buildTable(name){
                     { width: 600, 
                     height: 500, 
                     margin: { t: 0, b: 0 } };
-                    
+                    // Render the plot to the div tag with id "gauge"
                     Plotly.newPlot('gauge', data3, layout3);
     
         });
