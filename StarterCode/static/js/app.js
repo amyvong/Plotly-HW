@@ -51,7 +51,6 @@ function buildTable(name){
             var reversed_otu_ids=console.log(otu_ids.slice(0, 10).reverse());
             var reversed_sample_values=console.log(sample_values.slice(0, 10).reverse());
             var otu_id_label=otu_ids.map(d =>"OTU " +d);
-            var randomColor = Math.floor(Math.random()*16777215).toString(16);
             var metadata=data.metadata;
             var filteredmetaData = metadata.filter(data=>data.id==name)[0]
             var wfreq=filteredmetaData.wfreq
@@ -83,7 +82,7 @@ function buildTable(name){
                 mode: 'markers',
                 marker: {
                     size: sample_values,
-                    color: randomColor
+                    color: otu_ids
                         },
                 labels: otu_labels,
                 
